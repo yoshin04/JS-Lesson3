@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS Lesson3</title>
+</head>
+
+<body>
+  <h1>ToDoリスト</h1>
+  <form>
+    <input type="radio" name="status" value="all" checked="checked">すべて
+    <input type="radio" name="status" value="work">作業中
+    <input type="radio" name="status" value="finish">完了
+  </form>
+
+  <table>
+    <thead>
+      <tr><th>ID</th><th>コメント</th><th>状態</th></tr>
+    </thead>
+    <tbody id = "task_target">
+
+    </tbody>  
+  </table>
+
+  <h1>新規タスクの追加</h1>
+    <input id="task_value" type="text">
+    <input id="task_trigger" type="button" value="追加">
+  <script src="script.js"></script>
+</body>
+
+</html>
