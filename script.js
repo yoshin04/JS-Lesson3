@@ -1,37 +1,29 @@
 'use strict';
 const taskTrigger = document.getElementById('task_trigger');
-const taskTarget = document.getElementById('task_target');
 const taskValue = document.getElementById('task_value');
+const taskTbl = document.getElementById('tbl');
 const todos = [];
 
-const addTask = () => {
-  todos.forEach((todo, index) => {
-    const tableItem = document.createElement('tr');
-    taskTarget.appendChild(tableItem);
-    const taskId = document.createElement('td');
-    taskId.innerText = index;
-    tableItem.appendChild(taskId);
-    const taskContent = document.createElement('td');
-    taskContent.innerText = todo.task;
-    tableItem.appendChild(taskContent);
-    const status = document.createElement('td');
-    tableItem.appendChild(status);
-    const statusButton = document.createElement('button');
-    statusButton.innerText = todo.status;
-    status.appendChild(statusButton);
-    const remove = document.createElement('td');
-    tableItem.appendChild(remove);
-    const removeButton = document.createElement('button');
-    removeButton.innerText = '削除';
-    remove.appendChild(removeButton);
-  });
-};
-
+//task追加
 taskTrigger.addEventListener('click', () => {
-  const comment = taskValue.value;
-  const button = '作業中';
-  const todo = { task:comment, status:button}
+  const taskId = todos.length;
+  const todo = { task: taskValue.value, status: '作業中' }
   todos.push(todo);
-  addTask(todos);
-  taskValue.value = '';
+  //最後の行に新しい行を追加
+  const row = taskTbl.insertRow(-1);
+
+  //各項目の追加
+  const id = row.insertCell(0);
+  const comment = row.insertCell(1);
+  const status = row.insertCell(2);
+  const remove = row.insertCell(3);
+
+  id.innerText = taskId;
+  comment.textContent = todo.task;
+  const statusBtn = document.createElement('button');
+  statusBtn.innerText = todo.status;
+  status.appendChild(statusBtn);
+  const removeBtn = document.createElement('button');
+  removeBtn.innerText = '削除';
+  remove.appendChild(removeBtn);
 });
