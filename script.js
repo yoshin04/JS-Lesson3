@@ -33,7 +33,7 @@ const taskList = todo => {
   const remove = row.insertCell(3);
 
   id.innerText = taskId;
-  comment.textContent = todo.task;
+  comment.innerText = todo.task;
   createStatusBtn(todo, status);
   createRemoveBtn(remove);
 }
