@@ -1,7 +1,7 @@
 'use strict';
 const taskTrigger = document.getElementById('task_trigger');
 const taskValue = document.getElementById('task_value');
-const taskTbl = document.getElementById('tbl');
+const taskTable = document.getElementById('table');
 const todos = [];
 
 const pushTask = todo => {
@@ -24,7 +24,7 @@ const taskList = todo => {
   const taskId = todos.length;
 
   //最後の行に新しい行を追加
-  const row = taskTbl.insertRow(-1);
+  const row = taskTable.insertRow(-1);
 
   //各項目の追加
   const id = row.insertCell(0);
@@ -43,4 +43,5 @@ taskTrigger.addEventListener('click', () => {
   const todo = { task: taskValue.value, status: '作業中' }
   pushTask(todo);
   taskList(todo);
+  taskValue.value = '';
 });
