@@ -4,10 +4,6 @@ const taskValue = document.getElementById('task_value');
 const taskTable = document.getElementById('table');
 const todos = [];
 
-const pushTask = todo => {
-  todos.push(todo);
-}
-
 const createStatusButton = (todo, status) => {
   const statusButton = document.createElement('button');
   statusButton.innerText = todo.status;
@@ -23,12 +19,12 @@ const createRemoveButton = (remove, row) => {
     todos.splice(index, 1);
     while(table.rows[0])table.deleteRow(0);
     todos.forEach((todo) => {
-      taskList(todo);
+      listTask(todo);
     });
   });
 }
 
-const taskList = todo => {
+const listTask = todo => {
   const taskId = taskTable.rows.length;
 
   //最後の行に新しい行を追加
@@ -49,8 +45,8 @@ const taskList = todo => {
 //task追加機能発火
 taskTrigger.addEventListener('click', () => {
   const todo = { task: taskValue.value, status: '作業中' }
-  pushTask(todo);
-  taskList(todo);
+  todos.push(todo);
+  listTask(todo);
   taskValue.value = '';
 });
 
