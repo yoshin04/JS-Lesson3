@@ -19,12 +19,12 @@ const createRemoveButton = (remove, row) => {
     todos.splice(index, 1);
     while(table.rows[0])table.deleteRow(0);
     todos.forEach((todo) => {
-      listTask(todo);
+      showTasks(todo);
     });
   });
 }
 
-const listTask = todo => {
+const showTasks = todo => {
   const taskId = taskTable.rows.length;
 
   //最後の行に新しい行を追加
@@ -46,7 +46,7 @@ const listTask = todo => {
 taskTrigger.addEventListener('click', () => {
   const todo = { task: taskValue.value, status: '作業中' }
   todos.push(todo);
-  listTask(todo);
+  showTasks(todo);
   taskValue.value = '';
 });
 
