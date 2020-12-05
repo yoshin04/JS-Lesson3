@@ -8,6 +8,13 @@ const createStatusButton = (todo, status) => {
   const statusButton = document.createElement('button');
   statusButton.innerText = todo.status;
   status.appendChild(statusButton);
+  statusButton.addEventListener('click', () => {
+    if (statusButton.innerText === '作業中') {
+      statusButton.innerText = '完了';
+    } else {
+      statusButton.innerText = '作業中';
+    }
+  });
 }
 
 const createRemoveButton = (remove, row) => {
