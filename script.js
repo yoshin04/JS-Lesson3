@@ -4,16 +4,18 @@ const taskValue = document.getElementById('task_value');
 const taskTable = document.getElementById('table');
 const todos = [];
 
-const createStatusButton = (todo, status) => {
+const createStatusButton = (todo, status, row) => {
   const statusButton = document.createElement('button');
   statusButton.innerText = todo.status;
   status.appendChild(statusButton);
   statusButton.addEventListener('click', () => {
     if (statusButton.innerText === '作業中') {
       statusButton.innerText = '完了';
-    } else {
-      statusButton.innerText = '作業中';
+      // row.classList.add('finish');
+      return;
     }
+    statusButton.innerText = '作業中';
+    // row.classList.remove('finish');
   });
 }
 
@@ -22,9 +24,9 @@ const createRemoveButton = (remove, row) => {
   removeButton.innerText = '削除';
   remove.appendChild(removeButton);
   removeButton.addEventListener('click', () => {
-    const index = row.rowIndex-1;
+    const index = row.rowIndex - 1;
     todos.splice(index, 1);
-    while(table.rows[0])table.deleteRow(0);
+    while (table.rows[0]) table.deleteRow(0);
     todos.forEach((todo) => {
       showTasks(todo);
     });
@@ -36,6 +38,7 @@ const showTasks = todo => {
 
   //最後の行に新しい行を追加
   const row = taskTable.insertRow(-1);
+  row.classList.add('tasks');
 
   //各項目の追加
   const id = row.insertCell(0);
@@ -45,7 +48,7 @@ const showTasks = todo => {
 
   id.innerText = taskId;
   comment.innerText = todo.task;
-  createStatusButton(todo, status);
+  createStatusButton(todo, status, row);
   createRemoveButton(remove, row);
 }
 
@@ -56,4 +59,3 @@ taskTrigger.addEventListener('click', () => {
   showTasks(todo);
   taskValue.value = '';
 });
-
