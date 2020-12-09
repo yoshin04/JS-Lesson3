@@ -11,11 +11,11 @@ const createStatusButton = (todo, status, row) => {
   statusButton.addEventListener('click', () => {
     if (statusButton.innerText === '作業中') {
       statusButton.innerText = '完了';
-      // row.classList.add('finish');
+      row.classList.add('finish');
       return;
     }
     statusButton.innerText = '作業中';
-    // row.classList.remove('finish');
+    row.classList.remove('finish');
   });
 }
 
@@ -31,6 +31,35 @@ const createRemoveButton = (remove, row) => {
       showTasks(todo);
     });
   });
+}
+
+//タスク表示切り替え
+const change = () => {
+  const completes = document.querySelectorAll('.finish');
+  const unCompletes = document.querySelectorAll('.tasks');
+
+  if (radio[1].checked) {
+    unCompletes.forEach((unComplete) => {
+      unComplete.style.display = '';
+    });
+    completes.forEach((complete) => {
+      complete.style.display = 'none';
+    });
+  } else if (radio[2].checked) {
+    unCompletes.forEach((unComplete) => {
+      unComplete.style.display = 'none';
+    });
+    completes.forEach((complete) => {
+      complete.style.display = '';
+    });
+  } else {
+    unCompletes.forEach((unComplete) => {
+      unComplete.style.display = '';
+    });
+    completes.forEach((complete) => {
+      complete.style.display = '';
+    });
+  }
 }
 
 const showTasks = todo => {
@@ -58,4 +87,12 @@ taskTrigger.addEventListener('click', () => {
   todos.push(todo);
   showTasks(todo);
   taskValue.value = '';
+});
+
+//タスク表示切り替え発火
+const radio = document.getElementsByName('radio_button');
+radio.forEach(e => {
+  e.addEventListener('change', () => {
+    change();
+  });
 });
