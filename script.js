@@ -30,8 +30,8 @@ const createRemoveButton = (remove, row) => {
   removeButton.addEventListener('click', () => {
     const index = row.rowIndex - 1;
     todos.splice(index, 1);
-    while (table.rows[0]) table.deleteRow(0);
     showTasks();
+    change();
   });
 }
 
@@ -70,8 +70,11 @@ const showTasks = () => {
     const taskId = taskTable.rows.length;
     //最後の行に新しい行を追加
     const row = taskTable.insertRow(-1);
-    row.classList.add('tasks');
-  
+    row.classList.toggle('tasks');
+    if (todo.status === '完了') {
+      row.classList.add('finish');
+    }
+
     //各項目の追加
     const id = row.insertCell(0);
     const comment = row.insertCell(1);
@@ -90,6 +93,7 @@ taskTrigger.addEventListener('click', () => {
   const todo = { task: taskValue.value, status: '作業中' }
   todos.push(todo);
   showTasks();
+  change();
   taskValue.value = '';
 });
 
