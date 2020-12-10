@@ -70,7 +70,7 @@ const showTasks = () => {
     const taskId = taskTable.rows.length;
     //最後の行に新しい行を追加
     const row = taskTable.insertRow(-1);
-    row.classList.toggle('tasks');
+    row.classList.add('tasks');
     if (todo.status === '完了') {
       row.classList.add('finish');
     }
