@@ -10,12 +10,16 @@ const createStatusButton = (todo, status, row) => {
   status.appendChild(statusButton);
   statusButton.addEventListener('click', () => {
     if (statusButton.innerText === '作業中') {
-      statusButton.innerText = '完了';
-      // row.classList.add('finish');
+      todo.status = '完了';
+      statusButton.innerText = todo.status;
+      row.classList.add('finish');
+      change();
       return;
     }
-    statusButton.innerText = '作業中';
-    // row.classList.remove('finish');
+    todo.status = '作業中';
+    statusButton.innerText = todo.status;
+    row.classList.remove('finish');
+    change();
   });
 }
 
@@ -26,36 +30,77 @@ const createRemoveButton = (remove, row) => {
   removeButton.addEventListener('click', () => {
     const index = row.rowIndex - 1;
     todos.splice(index, 1);
-    while (table.rows[0]) table.deleteRow(0);
-    todos.forEach((todo) => {
-      showTasks(todo);
-    });
+    showTasks();
+    change();
   });
 }
 
-const showTasks = todo => {
-  const taskId = taskTable.rows.length;
+//タスク表示切り替え
+const change = () => {
+  const completes = document.querySelectorAll('.finish');
+  const unCompletes = document.querySelectorAll('.tasks');
 
-  //最後の行に新しい行を追加
-  const row = taskTable.insertRow(-1);
-  row.classList.add('tasks');
+  if (radio[1].checked) {
+    unCompletes.forEach((unComplete) => {
+      unComplete.style.display = '';
+    });
+    completes.forEach((complete) => {
+      complete.style.display = 'none';
+    });
+  } else if (radio[2].checked) {
+    unCompletes.forEach((unComplete) => {
+      unComplete.style.display = 'none';
+    });
+    completes.forEach((complete) => {
+      complete.style.display = '';
+    });
+  } else {
+    unCompletes.forEach((unComplete) => {
+      unComplete.style.display = '';
+    });
+    completes.forEach((complete) => {
+      complete.style.display = '';
+    });
+  }
+}
 
-  //各項目の追加
-  const id = row.insertCell(0);
-  const comment = row.insertCell(1);
-  const status = row.insertCell(2);
-  const remove = row.insertCell(3);
+const showTasks = () => {
+  taskTable.innerText = '';
+  todos.forEach((todo) => {
+    const taskId = taskTable.rows.length;
+    //最後の行に新しい行を追加
+    const row = taskTable.insertRow(-1);
+    row.classList.add('tasks');
+    if (todo.status === '完了') {
+      row.classList.add('finish');
+    }
 
-  id.innerText = taskId;
-  comment.innerText = todo.task;
-  createStatusButton(todo, status, row);
-  createRemoveButton(remove, row);
+    //各項目の追加
+    const id = row.insertCell(0);
+    const comment = row.insertCell(1);
+    const status = row.insertCell(2);
+    const remove = row.insertCell(3);
+  
+    id.innerText = taskId;
+    comment.innerText = todo.task;
+    createStatusButton(todo, status, row);
+    createRemoveButton(remove, row);
+  });
 }
 
 //task追加機能発火
 taskTrigger.addEventListener('click', () => {
   const todo = { task: taskValue.value, status: '作業中' }
   todos.push(todo);
-  showTasks(todo);
+  showTasks();
+  change();
   taskValue.value = '';
+});
+
+//タスク表示切り替え発火
+const radio = document.getElementsByName('radio_button');
+radio.forEach(e => {
+  e.addEventListener('change', () => {
+    change();
+  });
 });
