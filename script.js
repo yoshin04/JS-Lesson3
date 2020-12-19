@@ -4,7 +4,7 @@ const taskValue = document.getElementById('task_value');
 const taskTable = document.getElementById('table');
 const todos = [];
 
-const createStatusButton = (todo, status, row) => {
+const createStatusButton = (todo, status) => {
   const statusButton = document.createElement('button');
   statusButton.innerText = todo.status;
   status.appendChild(statusButton);
@@ -12,14 +12,12 @@ const createStatusButton = (todo, status, row) => {
     if (statusButton.innerText === '作業中') {
       todo.status = '完了';
       statusButton.innerText = todo.status;
-      row.classList.add('finish');
-      change();
+      changeStatus();
       return;
     }
     todo.status = '作業中';
     statusButton.innerText = todo.status;
-    row.classList.remove('finish');
-    change();
+    changeStatus();
   });
 }
 
@@ -30,50 +28,41 @@ const createRemoveButton = (remove, row) => {
   removeButton.addEventListener('click', () => {
     const index = row.rowIndex - 1;
     todos.splice(index, 1);
-    showTasks();
-    change();
+    changeStatus(); 
   });
 }
 
 //タスク表示切り替え
-const change = () => {
-  const completes = document.querySelectorAll('.finish');
-  const unCompletes = document.querySelectorAll('.tasks');
-
+const changeStatus = () => {
+  const filterTodos = [];
   if (radio[1].checked) {
-    unCompletes.forEach((unComplete) => {
-      unComplete.style.display = '';
+    todos.forEach((todo) => {
+      if (todo.status === '作業中') {
+        filterTodos.push(todo);
+      }
     });
-    completes.forEach((complete) => {
-      complete.style.display = 'none';
-    });
+    return showTasks(filterTodos);
   } else if (radio[2].checked) {
-    unCompletes.forEach((unComplete) => {
-      unComplete.style.display = 'none';
+    todos.forEach((todo) => {
+      if (todo.status === '完了') {
+        filterTodos.push(todo);
+      }
     });
-    completes.forEach((complete) => {
-      complete.style.display = '';
-    });
+    return showTasks(filterTodos);
   } else {
-    unCompletes.forEach((unComplete) => {
-      unComplete.style.display = '';
+    todos.forEach((todo) => {
+      filterTodos.push(todo);
     });
-    completes.forEach((complete) => {
-      complete.style.display = '';
-    });
+    return showTasks(filterTodos);
   }
 }
 
-const showTasks = () => {
+const showTasks = (filterTodos) => {
   taskTable.innerText = '';
-  todos.forEach((todo) => {
+  filterTodos.forEach((todo) => {
     const taskId = taskTable.rows.length;
     //最後の行に新しい行を追加
     const row = taskTable.insertRow(-1);
-    row.classList.add('tasks');
-    if (todo.status === '完了') {
-      row.classList.add('finish');
-    }
 
     //各項目の追加
     const id = row.insertCell(0);
@@ -92,8 +81,7 @@ const showTasks = () => {
 taskTrigger.addEventListener('click', () => {
   const todo = { task: taskValue.value, status: '作業中' }
   todos.push(todo);
-  showTasks();
-  change();
+  changeStatus();
   taskValue.value = '';
 });
 
@@ -101,6 +89,6 @@ taskTrigger.addEventListener('click', () => {
 const radio = document.getElementsByName('radio_button');
 radio.forEach(e => {
   e.addEventListener('change', () => {
-    change();
+    changeStatus();
   });
 });
